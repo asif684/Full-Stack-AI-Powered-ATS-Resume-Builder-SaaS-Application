@@ -1,0 +1,84 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+*.local
+
+# Environment files (SECRETS - DO NOT COMMIT)
+.env
+.env.local
+.env.*.local
+*.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Misc
+*.pem
+.vercel
+.netlify
+.netlify/
+
+# Claude/Anthropic specific
+.claude/
+.claude-*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Turborepo
+.turbo/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# pnpm
+.pnpm-store/
+
+# Yarn
+.yarn/
+.yarn-integrity
+
+# Docker
+.docker/
+docker-compose.override.yml

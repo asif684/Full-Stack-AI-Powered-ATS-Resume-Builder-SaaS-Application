@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  profile       Profile?
+  sessions      Session[]
+  resumeData    ResumeData[]
+  apiKeys       ApiKey[]
+}
+
+model Profile {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  email         String
+  phone         String?
+  location      String?
+  linkedin      String?
+  github        String?
+  website       String?
+  summary       String?
+  education     Education[]
+  experience    Experience[]
+  projects      Project[]
+  certificates  Certificate[]
+  skills        Skill[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Education {
+  id          String   @id @default(cuid())
+  profileId   String
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  institution String
+  degree      String
+  field       String?
+  startDate   String
+  endDate     String?
+  gpa         String?
+  description String?
+  order       Int      @default(0)
+}
+
+model Experience {
+  id            String   @id @default(cuid())
+  profileId     String
+  profile       Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  company       String
+  role          String
+  startDate     String
+  endDate       String?
+  current       Boolean  @default(false)
+  description   String?
+  technologies  String
+  location      String?
+  order         Int      @default(0)
+}
+
+model Project {
+  id           String   @id @default(cuid())
+  profileId    String
+  profile      Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  name         String
+  description  String
+  technologies String
+  link         String?
+  github       String?
+  pipeline     String?
+  featured     Boolean  @default(false)
+  order        Int      @default(0)
+}
+
+model Certificate {
+  id        String   @id @default(cuid())
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  name      String
+  issuer    String
+  date      String
+  link      String?
+  order     Int      @default(0)
+}
+
+model Skill {
+  id        String   @id @default(cuid())
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  name      String
+  category  String?
+  level     Int?
+  order     Int      @default(0)
+}
+
+model ResumeData {
+  id                 String   @id @default(cuid())
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobDescription     String
+  extractedKeywords  String
+  llmConfig          String
+  selectedProjects   String?
+  generatedContent   String
+  generatedSections  String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model ApiKey {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider     String
+  encryptedKey String
+  model        String?
+  baseUrl      String?
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, provider])
+}
